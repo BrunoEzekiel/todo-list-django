@@ -306,11 +306,26 @@ Contribuições são sempre bem-vindas! Para contribuir:
 
 Este projeto está licenciado sob a Licença MIT - veja o arquivo [LICENSE](LICENSE) para detalhes.
 
+## 🤝 Contribuindo
+
+Contribuições são bem-vindas! Sinta-se à vontade para:
+- Reportar bugs
+- Sugerir novas funcionalidades  
+- Enviar pull requests
+- Melhorar a documentação
+
+### Como Contribuir
+
+1. Faça um fork do projeto
+2. Crie uma branch para sua feature (`git checkout -b feature/AmazingFeature`)
+3. Commit suas mudanças (`git commit -m 'Add some AmazingFeature'`)
+4. Push para a branch (`git push origin feature/AmazingFeature`)
+5. Abra um Pull Request
+
 ## 👨‍💻 Autor
 
 **Bruno Ezekiel**
 - GitHub: [@BrunoEzekiel](https://github.com/BrunoEzekiel)
-- Email: [seu-email@exemplo.com](mailto:seu-email@exemplo.com)
 - LinkedIn: [Bruno Ezekiel](https://linkedin.com/in/bruno-ezekiel)
 
 ---
