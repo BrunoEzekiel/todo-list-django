@@ -278,7 +278,3 @@ Contribuições são bem-vindas! Sinta-se à vontade para:
 - Sugerir novas funcionalidades  
 - Enviar pull requests
 - Melhorar a documentação
-
----
-
-**Desenvolvido com ❤️ e Django**
