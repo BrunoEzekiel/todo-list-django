@@ -1,0 +1,84 @@
+{% extends 'tasks/base.html' %}
+
+{% block title %}Bem-vindo - To-Do List{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-8 mx-auto text-center">
+        <div class="jumbotron p-5 rounded shadow-sm" style="background-color: var(--black-card); border: 2px solid var(--green-neon);">
+            <h1 class="display-4">
+                <i class="fas fa-tasks me-3"></i>
+                Bem-vindo ao To-Do List
+            </h1>
+            <p class="lead mt-4" style="color: var(--white-text);">
+                Organize suas tarefas de forma simples e eficiente. 
+                Crie, edite, marque como concluídas e nunca mais esqueça do que precisa fazer!
+            </p>
+            
+            <hr class="my-4" style="border-color: var(--green-dark);">
+            
+            <div class="row mt-5">
+                <div class="col-md-4">
+                    <div class="feature-box">
+                        <i class="fas fa-plus-circle fa-3x mb-3" style="color: var(--green-neon);"></i>
+                        <h5>Criar Tarefas</h5>
+                        <p style="color: var(--white-text);">Adicione novas tarefas com título, descrição e prioridade</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-box">
+                        <i class="fas fa-check-circle fa-3x mb-3" style="color: var(--green-light);"></i>
+                        <h5>Marcar Concluídas</h5>
+                        <p style="color: var(--white-text);">Marque tarefas como concluídas com um simples clique</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-box">
+                        <i class="fas fa-filter fa-3x mb-3" style="color: var(--green-dark);"></i>
+                        <h5>Filtrar & Buscar</h5>
+                        <p style="color: var(--white-text);">Filtre por status, prioridade ou busque por palavras-chave</p>
+                    </div>
+                </div>
+            </div>
+            
+            {% if not user.is_authenticated %}
+            <div class="mt-5">
+                <a class="btn btn-primary btn-lg me-3" href="{% url 'register' %}">
+                    <i class="fas fa-user-plus me-2"></i>Começar Agora
+                </a>
+                <a class="btn btn-outline-primary btn-lg" href="{% url 'login' %}">
+                    <i class="fas fa-sign-in-alt me-2"></i>Já tenho conta
+                </a>
+            </div>
+            {% else %}
+            <div class="mt-5">
+                <a class="btn btn-primary btn-lg me-3" href="{% url 'task_list' %}">
+                    <i class="fas fa-list me-2"></i>Ver Minhas Tarefas
+                </a>
+                <a class="btn btn-success btn-lg" href="{% url 'task_create' %}">
+                    <i class="fas fa-plus me-2"></i>Nova Tarefa
+                </a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% if user.is_authenticated %}
+<div class="row mt-5">
+    <div class="col-12">
+        <div class="card stats-card">
+            <div class="card-body text-center">
+                <h5 class="card-title">
+                    <i class="fas fa-chart-pie me-2"></i>
+                    Olá, {{ user.username }}! 
+                </h5>
+                <p class="card-text">
+                    Você está logado e pode começar a gerenciar suas tarefas.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

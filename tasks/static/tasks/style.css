@@ -1,0 +1,118 @@
+/* Paleta de Cores Verde Neon + Preto */
+:root {
+    --green-neon: #00ff41;
+    --green-light: #39ff6b;
+    --green-dark: #00cc33;
+    --green-darker: #009926;
+    --black-bg: #0a0a0a;
+    --black-card: #1a1a1a;
+    --black-lighter: #2a2a2a;
+    --white-text: #ffffff;
+    --green-glow: 0 0 10px #00ff41;
+}
+
+/* Override Bootstrap para tema escuro */
+body {
+    background-color: var(--black-bg) !important;
+    color: var(--white-text) !important;
+}
+
+/* Todos os textos brancos por padrão */
+* {
+    color: var(--white-text) !important;
+}
+
+/* Títulos sempre em verde neon */
+h1, h2, h3, h4, h5, h6,
+.h1, .h2, .h3, .h4, .h5, .h6 {
+    color: var(--green-neon) !important;
+    text-shadow: var(--green-glow);
+}
+
+/* Cards escuros */
+.card {
+    background-color: var(--black-card) !important;
+    border: 1px solid var(--green-dark) !important;
+}
+
+.card-header {
+    background-color: var(--black-lighter) !important;
+    border-bottom: 1px solid var(--green-dark) !important;
+}
+
+/* Botões verdes */
+.btn-primary {
+    background-color: var(--green-neon) !important;
+    border-color: var(--green-neon) !important;
+    color: var(--black-bg) !important;
+}
+
+.btn-primary:hover {
+    background-color: var(--green-light) !important;
+    border-color: var(--green-light) !important;
+    color: var(--black-bg) !important;
+    box-shadow: var(--green-glow);
+}
+
+.btn-success {
+    background-color: var(--green-dark) !important;
+    border-color: var(--green-dark) !important;
+    color: var(--white-text) !important;
+}
+
+.btn-success:hover {
+    background-color: var(--green-neon) !important;
+    border-color: var(--green-neon) !important;
+    color: var(--black-bg) !important;
+    box-shadow: var(--green-glow);
+}
+
+/* Formulários escuros */
+.form-control {
+    background-color: var(--black-lighter) !important;
+    border: 1px solid var(--green-dark) !important;
+    color: var(--white-text) !important;
+}
+
+.form-control:focus {
+    background-color: var(--black-lighter) !important;
+    border-color: var(--green-neon) !important;
+    color: var(--white-text) !important;
+    box-shadow: 0 0 0 0.2rem rgba(0, 255, 65, 0.25) !important;
+}
+
+/* Navbar escura com verde */
+.navbar {
+    background: linear-gradient(135deg, var(--black-bg) 0%, var(--black-lighter) 100%) !important;
+    border-bottom: 2px solid var(--green-neon);
+}
+
+.navbar-brand {
+    color: var(--green-neon) !important;
+    text-shadow: var(--green-glow);
+}
+
+.nav-link {
+    color: var(--white-text) !important;
+}
+
+.nav-link:hover {
+    color: var(--green-light) !important;
+    text-shadow: var(--green-glow);
+}
+
+/* Efeito de brilho para elementos importantes */
+.btn-primary:hover,
+.btn-success:hover,
+.navbar-brand:hover {
+    animation: glow 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+    from {
+        box-shadow: 0 0 5px var(--green-neon);
+    }
+    to {
+        box-shadow: 0 0 20px var(--green-neon), 0 0 30px var(--green-neon);
+    }
+}

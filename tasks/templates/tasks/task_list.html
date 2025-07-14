@@ -1,0 +1,203 @@
+{% extends 'tasks/base.html' %}
+
+{% block title %}Minhas Tarefas - To-Do List{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2><i class="fas fa-list me-2"></i>Minhas Tarefas</h2>
+    <a href="{% url 'task_create' %}" class="btn btn-success">
+        <i class="fas fa-plus me-1"></i>Nova Tarefa
+    </a>
+</div>
+
+<!-- Estatísticas -->
+<div class="row mb-4">
+    <div class="col-md-4">
+        <div class="card text-white" style="background: linear-gradient(135deg, var(--green-dark) 0%, var(--green-neon) 100%);">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h4>{{ total_tasks }}</h4>
+                        <p class="mb-0">Total de Tarefas</p>
+                    </div>
+                    <div class="align-self-center">
+                        <i class="fas fa-tasks fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-white" style="background: linear-gradient(135deg, #664400 0%, #ffaa00 100%);">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h4>{{ pending_tasks }}</h4>
+                        <p class="mb-0">Pendentes</p>
+                    </div>
+                    <div class="align-self-center">
+                        <i class="fas fa-clock fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-white" style="background: linear-gradient(135deg, var(--green-darker) 0%, var(--green-light) 100%);">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h4>{{ completed_tasks }}</h4>
+                        <p class="mb-0">Concluídas</p>
+                    </div>
+                    <div class="align-self-center">
+                        <i class="fas fa-check fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Filtros -->
+<div class="card mb-4">
+    <div class="card-header">
+        <h5><i class="fas fa-filter me-1"></i>Filtros</h5>
+    </div>
+    <div class="card-body">
+        <form method="get" class="row g-3">
+            <div class="col-md-3">
+                {{ filter_form.status.label_tag }}
+                {{ filter_form.status }}
+            </div>
+            <div class="col-md-3">
+                {{ filter_form.priority.label_tag }}
+                {{ filter_form.priority }}
+            </div>
+            <div class="col-md-4">
+                {{ filter_form.search.label_tag }}
+                {{ filter_form.search }}
+            </div>
+            <div class="col-md-2">
+                <label>&nbsp;</label>
+                <div>
+                    <button type="submit" class="btn btn-primary me-2">
+                        <i class="fas fa-search"></i>
+                    </button>
+                    <a href="{% url 'task_list' %}" class="btn btn-secondary">
+                        <i class="fas fa-times"></i>
+                    </a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Lista de Tarefas -->
+{% if page_obj %}
+    <div class="row">
+        {% for task in page_obj %}
+        <div class="col-lg-6 mb-3">
+            <div class="card task-card priority-{{ task.priority }} {% if task.completed %}completed-task{% endif %} {% if task.is_overdue %}overdue{% endif %}">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div class="flex-grow-1">
+                            <h5 class="card-title {% if task.completed %}text-decoration-line-through{% endif %}">
+                                {{ task.title }}
+                                {% if task.is_overdue %}
+                                    <span class="badge bg-danger ms-2">
+                                        <i class="fas fa-exclamation-triangle"></i> Atrasada
+                                    </span>
+                                {% endif %}
+                            </h5>
+                            {% if task.description %}
+                                <p class="card-text text-muted">{{ task.description|truncatewords:20 }}</p>
+                            {% endif %}
+                            
+                            <div class="d-flex flex-wrap gap-2 mb-2">
+                                <span class="badge bg-{% if task.priority == 'alta' %}danger{% elif task.priority == 'media' %}warning{% else %}success{% endif %}">
+                                    {{ task.get_priority_display }}
+                                </span>
+                                {% if task.due_date %}
+                                    <span class="badge bg-info">
+                                        <i class="fas fa-calendar"></i> {{ task.due_date|date:"d/m/Y H:i" }}
+                                    </span>
+                                {% endif %}
+                                <span class="badge bg-secondary">
+                                    {{ task.created_at|date:"d/m/Y" }}
+                                </span>
+                            </div>
+                        </div>
+                        
+                        <div class="ms-3">
+                            <div class="btn-group-vertical" role="group">
+                                <button onclick="toggleTask('{{ task.pk }}')" 
+                                        class="btn btn-sm {% if task.completed %}btn-warning{% else %}btn-success{% endif %}"
+                                        title="{% if task.completed %}Marcar como pendente{% else %}Marcar como concluída{% endif %}">
+                                    <i class="fas {% if task.completed %}fa-undo{% else %}fa-check{% endif %}"></i>
+                                </button>
+                                <a href="{% url 'task_edit' task.pk %}" 
+                                   class="btn btn-sm btn-primary" 
+                                   title="Editar tarefa">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <a href="{% url 'task_delete' task.pk %}" 
+                                   class="btn btn-sm btn-danger"
+                                   title="Excluir tarefa"
+                                   onclick="return confirmDelete()">
+                                    <i class="fas fa-trash"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    
+    <!-- Paginação -->
+    {% if page_obj.has_other_pages %}
+        <div class="d-flex justify-content-center">
+            <nav aria-label="Navegação de páginas">
+                <ul class="pagination">
+                    {% if page_obj.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page=1{% if request.GET.status %}&status={{ request.GET.status }}{% endif %}{% if request.GET.priority %}&priority={{ request.GET.priority }}{% endif %}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}">Primeira</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if request.GET.status %}&status={{ request.GET.status }}{% endif %}{% if request.GET.priority %}&priority={{ request.GET.priority }}{% endif %}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}">Anterior</a>
+                        </li>
+                    {% endif %}
+                    
+                    <li class="page-item active">
+                        <span class="page-link">
+                            Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}
+                        </span>
+                    </li>
+                    
+                    {% if page_obj.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if request.GET.status %}&status={{ request.GET.status }}{% endif %}{% if request.GET.priority %}&priority={{ request.GET.priority }}{% endif %}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}">Próxima</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}{% if request.GET.status %}&status={{ request.GET.status }}{% endif %}{% if request.GET.priority %}&priority={{ request.GET.priority }}{% endif %}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}">Última</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+    {% endif %}
+{% else %}
+    <div class="text-center py-5">
+        <i class="fas fa-tasks fa-5x text-muted mb-3"></i>
+        <h3 class="text-muted">Nenhuma tarefa encontrada</h3>
+        <p class="text-muted">Comece criando sua primeira tarefa!</p>
+        <a href="{% url 'task_create' %}" class="btn btn-success btn-lg">
+            <i class="fas fa-plus me-2"></i>Criar Nova Tarefa
+        </a>
+    </div>
+{% endif %}
+
+{% csrf_token %}
+{% endblock %}
